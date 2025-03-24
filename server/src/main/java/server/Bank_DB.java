@@ -2,6 +2,7 @@ package server;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Properties;
 
 class Bank_DB {
 	
@@ -11,15 +12,30 @@ class Bank_DB {
 	private final String psqlPass = "muser";
 	
 	Bank_DB() throws SQLException {
-		
-		corecon = DriverManager.getConnection(psqlServer, psqlUser, psqlPass);
+	
+		Properties opts = new Properties();	
+		opts.setProperty("user", psqlUser);
+		opts.setProperty("password", psqlPass);
+		corecon = DriverManager.getConnection(psqlServer, opts);
 		
 	}
-	
+
+	ResultSet queryIt(String query) throws SQLException {
+
+		Statement st;
+		ResultSet rs;
+		rs = null;
+		st = corecon.createStatement();
+		if ((rs = st.executeQuery(query)) == null)
+			throw new NullPointerException;
+		return rs;
+
+	}
+
 	Bank_Account login(int account_num, String password) throws SQLException {
 		
 		Statement st = corecon.createStatement();
-		ResultSet rs = st.executeQuery("SELECT accounts.id_num, accounts.passwd FROM accounts");
+		ResultSet rs = st.executeQuery("SELECT accounts.account_id, accounts.passwd FROM accounts");
 		while (rs.next()) {
 			if (rs.getInt(1) == account_num && rs.getString(2).equals(password)) {
 				rs.close();
