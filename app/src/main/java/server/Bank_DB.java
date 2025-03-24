@@ -1,17 +1,18 @@
 package server;
 
 import java.sql.*;
+import java.util.HashMap;
 
 class Bank_DB {
 	
-	private final Connection corecon;
+	private final Connection corecon = null;
 	private final String psqlServer = "jdbc:postgresql://192.168.0.232:5432/bank";
 	private final String psqlUser = "postgres";
 	private final String psqlPass = "muser";
 	
 	Bank_DB() throws SQLException {
 		
-		corecon = DriverManager.getConnection(psqlServer, psqlUser, psqlPass);
+		//corecon = DriverManager.getConnection(psqlServer, psqlUser, psqlPass);
 		
 	}
 	
@@ -51,20 +52,17 @@ class Bank_DB {
 		return false;
 	}
 	
-	void queryAndPrint() throws SQLException {
+	String mkTable(String tableName, HashMap<String, String> tableVals) throws SQLException {
 		
-		int n = 1;
-		Statement st = corecon.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM accounts");
-		while (rs.next()) {
-			while (n < 10)
-				System.out.print(rs.getString(n++) + "\t");
-		    System.out.println();
-		    n = 1;
+		Statement st;
+		ResultSet rs;
+		String query;
+		query = String.format("CREATE TABLE %s (", tableName);
+		for (String key : tableVals.keySet()) {
+			query += key + ' ';
+			query += tableVals.get(key) + ", ";
 		}
-		rs.close();
-		st.close();
-		corecon.close();
+		return query.substring(0, query.length() - 2) + ')';
 		
 	}
 
