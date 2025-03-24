@@ -4,7 +4,9 @@
 [versions]
 guava = "33.3.1-jre"
 junit-jupiter = "5.11.3"
+postgres-jdbc = "42.7.5"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+postgres-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgres-jdbc" }

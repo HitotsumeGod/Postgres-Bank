@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'java' 
+    id 'eclipse'
 }
 
 repositories {
@@ -25,7 +27,7 @@ dependencies {
     implementation libs.guava
     
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-	implementation 'org.postgresql:postgresql:42.7.5'
+    implementation libs.postgres.jdbc
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
