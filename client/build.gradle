@@ -39,7 +39,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'server.Pilot'
+    mainClass = 'client.Pilot'
 }
 
 tasks.named('test') {
