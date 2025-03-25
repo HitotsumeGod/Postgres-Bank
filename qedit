@@ -1,3 +1,4 @@
 #!/bin/bash
 
-$EDITOR app/src/main/java/server
+read LOCALE
+$EDITOR $LOCALE/src/main/java/$LOCALE
