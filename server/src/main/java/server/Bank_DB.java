@@ -27,7 +27,7 @@ class Bank_DB {
 		rs = null;
 		st = corecon.createStatement();
 		if ((rs = st.executeQuery(query)) == null)
-			throw new NullPointerException;
+			throw new NullPointerException();
 		return rs;
 
 	}

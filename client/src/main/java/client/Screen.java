@@ -30,6 +30,7 @@ class Screen extends JFrame {
 	
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
+	private Account_Template at;
 
 	private Screen() {
 

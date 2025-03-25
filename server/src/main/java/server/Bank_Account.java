@@ -46,4 +46,10 @@ class Bank_Account {
 		
 	}
 
+	int getID() {
+
+		return account_id;
+
+	}
+
 }
