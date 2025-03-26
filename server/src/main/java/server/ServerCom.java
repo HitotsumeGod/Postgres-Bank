@@ -21,7 +21,7 @@ class ServerCom implements Runnable {
 
 	public void run() {
 		
-		Bank_DB myBank;
+		Bank_DB myBank = null;
 		Bank_Account myAcc;
 		ResultSet rs;
 		String bankPass, queryForm;
@@ -41,26 +41,27 @@ class ServerCom implements Runnable {
 				bankPass = sockIn.readLine();
 				if ((myAcc = myBank.login(bankUser, bankPass)) == null) 
 					sockOut.write(LOGIN_ERROR, 0, LOGIN_ERROR.length());
-				queryForm = String.format("SELECT balance FROM accounts WHERE account_id=%d", myAcc.getID());
+				queryForm = String.format("SELECT balance FROM accounts WHERE account_number=%d", myAcc.getID());
 				rs = myBank.queryIt(queryForm);
 				rs.next();
-				sockOut.write('D' + rs.getString(), 0, 1 + rs.getString().length());
+				System.out.println(rs.getString(1));
+				sockOut.write('D' + rs.getString(1), 0, 1 + rs.getString(1).length());
 				rs.close();
 				cont = true;
 				while (cont)
 					switch (Integer.valueOf(sockIn.readLine())) {
 
 					}
-			} while (myAcc == null)
+			} while (myAcc == null);
 			sockIn.close();
 			sockOut.close();
-		} catch (IOException io) {
+		} catch (IOException | SQLException io) {
 			io.printStackTrace();
 		}
 
 	}
 
-	boolean handle() {
+	boolean handle() throws IOException {
 
 		csock = ssock.accept();
 		if (csock == null)	

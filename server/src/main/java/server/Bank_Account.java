@@ -21,7 +21,8 @@ class Bank_Account {
 		String query;
 		double currentBal;
 		query = String.format("SELECT accounts.balance::numeric FROM accounts WHERE accounts.account_id=%d", accountID);
-
+		return (Double) null;
+		
 	}
 	
 	boolean mkDeposit(double amount) throws SQLException {
@@ -40,15 +41,14 @@ class Bank_Account {
 		query = String.format("SELECT accounts.balance FROM accounts WHERE accounts.account_id=%d", accountID);
 		rs = st.executeQuery(query);
 		rs.next();
-		if (rs.getString(1) == currentBal + amount)
+		//if (rs.getString(1) == currentBal + amount)
 			return true;
-		return false;
 		
 	}
 
 	int getID() {
 
-		return account_id;
+		return accountID;
 
 	}
 

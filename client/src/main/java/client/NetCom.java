@@ -1,6 +1,7 @@
 package client;
 
 import java.net.*;
+import java.time.Duration;
 import java.util.*;
 import java.io.*;
 
@@ -25,29 +26,36 @@ class NetCom {
 		ssock = null; 
 		sockOut = null;
 		sockIn = null;
+		String tstring = "0";
 		try {
 			ssock = new Socket(hostName, hostPort);
 			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
 			sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
+			sockOut.write(tstring, 0, tstring.length());
+			sockOut.newLine();
+			sockOut.flush();
+			tstring = "mrmagic";
+			sockOut.write(tstring, 0, tstring.length());
+			sockOut.newLine();
+			sockOut.flush();
+			ssock.close();
+			sockOut.close();
+			sockIn.close();
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
-		if (ssock == null || sockOut == null || sockIn == null)
-			System.exit(1);
 		
 	}
 
 	boolean checkLogin() {
 
-		if (sockOut.readLine().equals(LOGIN_ERROR))
-			return false;
+		try {
+			if (sockIn.readLine().equals(LOGIN_ERROR))
+				return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
-
-	}
-
-	Account_Template populateGUI() {
-
-			
 
 	}
 

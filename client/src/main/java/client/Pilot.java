@@ -6,7 +6,7 @@ public class Pilot {
 
 		Screen sc = Screen.getScreen();
 		NetCom nc = NetCom.getCom("127.0.0.1", 4445);
-		sc.updateScreen();
+		//sc.updateScreen();
 		nc.getConnection();
 
 	}

@@ -35,7 +35,7 @@ class Bank_DB {
 	Bank_Account login(int account_num, String password) throws SQLException {
 		
 		Statement st = corecon.createStatement();
-		ResultSet rs = st.executeQuery("SELECT accounts.account_id, accounts.passwd FROM accounts");
+		ResultSet rs = st.executeQuery("SELECT accounts.account_number, accounts.passwd FROM accounts");
 		while (rs.next()) {
 			if (rs.getInt(1) == account_num && rs.getString(2).equals(password)) {
 				rs.close();

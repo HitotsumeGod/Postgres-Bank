@@ -1,18 +1,26 @@
+package client;
+
 class Account_Template {
 
-	private final String firstName;
-	private final String lastName;
-	private final int accountID;
-	private final String passwd;
-	private final double balance;
-	private final int[] linkedAccounts;
-	private final float interestRate;
+	private String firstName = null;
+	private String lastName = null;
+	private Integer accountID = null;
+	private String passwd = null;
+	private Double balance = null;
+	private Integer[] linkedAccounts = null;
+	private Float interestRate = null;
 
 	private Account_Template() {}
 
 	Account_Template(Account_Template filled) {
 
-		this = filled;
+		this.firstName = filled.firstName;
+		this.lastName = filled.lastName;
+		this.accountID = filled.accountID;
+		this.passwd = filled.passwd;
+		this.balance = filled.balance;
+		this.linkedAccounts = filled.linkedAccounts;
+		this.interestRate = filled.interestRate;
 
 	}
 
@@ -30,7 +38,7 @@ class Account_Template {
 
 	}
 
-	static Account_Template setAccountID(Account_Template t, int accountID) {
+	static Account_Template setAccountID(Account_Template t, Integer accountID) {
 
 		t.accountID = accountID;
 		return t;
@@ -44,21 +52,21 @@ class Account_Template {
 
 	}
 
-	static Account_Template setBalance(Account_Template t, double balance) {
+	static Account_Template setBalance(Account_Template t, Double balance) {
 
 		t.balance = balance;
 		return t;
 
 	}
 
-	static Account_Template setLinkedAccounts(Account_Template t, int[] linkedAccounts) {
+	static Account_Template setLinkedAccounts(Account_Template t, Integer[] linkedAccounts) {
 
 		t.linkedAccounts = linkedAccounts;
 		return t;
 
 	}
 
-	static Account_Template setInterestRate(Account_Template t, float interestRate) {
+	static Account_Template setInterestRate(Account_Template t, Float interestRate) {
 
 		t.interestRate = interestRate;
 		return t;
