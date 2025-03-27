@@ -39,17 +39,12 @@ class NetCom {
 	void writeLogin(int accountNum, String passwd) throws IOException {
 
 		String sform = String.valueOf(accountNum);
-		System.out.println(sform);
-		System.out.println(passwd);
 		sockOut.write(sform, 0, sform.length());
 		sockOut.newLine();
 		sockOut.flush();
-		sockOut.write(passwd, 0, sform.length());
+		sockOut.write(passwd, 0, passwd.length());
 		sockOut.newLine();
 		sockOut.flush();
-		sockOut.close();
-		sockIn.close();
-		ssock.close();
 
 	}
 
@@ -64,6 +59,15 @@ class NetCom {
 		return true;
 
 	}
+	
+	void closeCon() throws IOException {
+	
+		sockOut.close();
+		sockIn.close();
+		ssock.close();
+	
+	}
+	
 
 	public static NetCom getCom(String hostName, int hostPort) {
 

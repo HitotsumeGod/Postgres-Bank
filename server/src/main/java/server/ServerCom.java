@@ -28,19 +28,17 @@ class ServerCom implements Runnable {
 		int bankUser, c;
 		boolean cont;
 		
-		/*try {
+		try {
 			myBank = new Bank_DB();
 		} catch (SQLException se) {
 			se.printStackTrace();
-		}*/
+		}
 		try {
 			sockIn = new BufferedReader(new InputStreamReader(csock.getInputStream()));
 			sockOut = new BufferedWriter(new OutputStreamWriter(csock.getOutputStream()));
 			do {
 				bankUser = Integer.valueOf(sockIn.readLine());
 				bankPass = sockIn.readLine();
-				System.out.println(bankUser + "GOD" + bankPass);
-				System.exit(1);
 				if ((myAcc = myBank.login(bankUser, bankPass)) == null) 
 					sockOut.write(LOGIN_ERROR, 0, LOGIN_ERROR.length());
 				queryForm = String.format("SELECT balance FROM accounts WHERE account_number=%d", myAcc.getID());
@@ -48,6 +46,7 @@ class ServerCom implements Runnable {
 				rs.next();
 				System.out.println(rs.getString(1));
 				sockOut.write('D' + rs.getString(1), 0, 1 + rs.getString(1).length());
+				sockOut.flush();
 				rs.close();
 				cont = true;
 				while (cont)

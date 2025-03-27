@@ -28,6 +28,8 @@ class Screen extends JFrame {
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
+				System.out.println(com.checkLogin());
+				com.closeCon();
 			} catch (IOException io) {
 				io.printStackTrace();
 			}
