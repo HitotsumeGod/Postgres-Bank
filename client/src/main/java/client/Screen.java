@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.*;
 
 class Screen extends JFrame {
 	
@@ -23,7 +24,13 @@ class Screen extends JFrame {
 			
 			this.username = ((JTextField) comps[0]).getText();
 			this.password = new String(((JPasswordField) comps[2]).getPassword());
-			System.out.print(username + '\n' + password + '\n');
+			com = NetCom.getCom("127.0.0.1", 4445);
+			com.getConnection();
+			try {
+				com.writeLogin(Integer.parseInt(username), password);
+			} catch (IOException io) {
+				io.printStackTrace();
+			}
 			
 		}
 		
@@ -57,6 +64,7 @@ class Screen extends JFrame {
 	
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
+	private NetCom com;
 	private Account_Template at;
 
 	private Screen() {

@@ -26,25 +26,31 @@ class NetCom {
 		ssock = null; 
 		sockOut = null;
 		sockIn = null;
-		String tstring = "0";
 		try {
 			ssock = new Socket(hostName, hostPort);
 			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
 			sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
-			sockOut.write(tstring, 0, tstring.length());
-			sockOut.newLine();
-			sockOut.flush();
-			tstring = "mrmagic";
-			sockOut.write(tstring, 0, tstring.length());
-			sockOut.newLine();
-			sockOut.flush();
-			ssock.close();
-			sockOut.close();
-			sockIn.close();
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
 		
+	}
+
+	void writeLogin(int accountNum, String passwd) throws IOException {
+
+		String sform = String.valueOf(accountNum);
+		System.out.println(sform);
+		System.out.println(passwd);
+		sockOut.write(sform, 0, sform.length());
+		sockOut.newLine();
+		sockOut.flush();
+		sockOut.write(passwd, 0, sform.length());
+		sockOut.newLine();
+		sockOut.flush();
+		sockOut.close();
+		sockIn.close();
+		ssock.close();
+
 	}
 
 	boolean checkLogin() {
