@@ -11,8 +11,7 @@ public class Pilot {
 		int n;
 
 		try {
-			sc = new ServerCom();
-			sc.getCom();
+			sc = ServerCom.getCom();
 			n = 0;
 			while (n++ < 5) {
 				if (sc.handle()) {
