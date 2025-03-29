@@ -15,7 +15,7 @@ class ServerCom implements Runnable {
 
 	private ServerCom() throws IOException {
 
-		ssock = new ServerSocket(4445);
+		ssock = new ServerSocket(6666);
 
 	}
 

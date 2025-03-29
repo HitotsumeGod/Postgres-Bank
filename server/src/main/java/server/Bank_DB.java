@@ -7,7 +7,7 @@ import java.util.Properties;
 class Bank_DB {
 	
 	private Connection corecon = null;
-	private final String psqlServer = "jdbc:postgresql://127.0.0.1/bank";
+	private final String psqlServer = "jdbc:postgresql://192.168.0.232/bank";
 	private final String psqlUser = "postgres";
 	private final String psqlPass = "muser";
 	
