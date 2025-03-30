@@ -1,5 +1,6 @@
 package client;
 
+@SuppressWarnings("unused")
 class Account_Template {
 
 	private String firstName = null;
@@ -11,18 +12,49 @@ class Account_Template {
 	private Float interestRate = null;
 
 	private Account_Template() {}
-
-	Account_Template(Account_Template filled) {
-
-		this.firstName = filled.firstName;
-		this.lastName = filled.lastName;
-		this.accountID = filled.accountID;
-		this.passwd = filled.passwd;
-		this.balance = filled.balance;
-		this.linkedAccounts = filled.linkedAccounts;
-		this.interestRate = filled.interestRate;
-
+	
+	String getFirstName() {
+		
+		return this.firstName;
+		
 	}
+	
+	String getLastName() {
+		
+		return this.lastName;
+		
+	}
+	
+	Integer getAccountID() {
+		
+		return this.accountID;
+		
+	}
+	
+	String getPassword() {
+		
+		return this.passwd;
+		
+	}
+	
+	Double getBalance() {
+		
+		return this.balance;
+		
+	}
+	
+	Integer[] getLinkedAccounts() {
+		
+		return this.linkedAccounts;
+		
+	}
+	
+	Float getInterestRate() {
+		
+		return this.interestRate;
+		
+	}
+			
 
 	static Account_Template setFirstName(Account_Template t, String firstName) {
 

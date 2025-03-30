@@ -23,9 +23,6 @@ class NetCom {
 	
 	void getConnection() {
 		
-		ssock = null; 
-		sockOut = null;
-		sockIn = null;
 		try {
 			ssock = new Socket(hostName, hostPort);
 			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
@@ -47,20 +44,27 @@ class NetCom {
 		sockOut.flush();
 
 	}
+	
+	Account_Template getAccountDetails() throws IOException {
+		
+		String first_name = sockIn.readLine();
+		String last_name = sockIn.readLine();
+		Integer account_number = Integer.parseInt(sockIn.readLine());
+		String passwd = sockIn.readLine();
+		Double balance = Double.parseDouble(sockIn.readLine());
+		return Account_Template.setFirstName(Account_Template.setLastName(Account_Template.setAccountID(Account_Template.setPassword(Account_Template.setBalance(Account_Template.build(), balance), passwd), account_number), last_name), first_name);
+		
+	}
 
-	boolean checkLogin() {
+	boolean checkLogin() throws IOException {
 
-		try {
-			if (sockIn.readLine().equals(LOGIN_ERROR))
+		if (sockIn.readLine().equals(LOGIN_ERROR))
 				return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return true;
 
 	}
 	
-	void closeCon() throws IOException {
+	void closeCom() throws IOException {
 	
 		sockOut.close();
 		sockIn.close();

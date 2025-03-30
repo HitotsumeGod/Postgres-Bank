@@ -48,11 +48,6 @@ class ServerCom implements Runnable {
 				sockOut.write('D' + rs.getString(1), 0, 1 + rs.getString(1).length());
 				sockOut.flush();
 				rs.close();
-				cont = true;
-				while (cont)
-					switch (Integer.valueOf(sockIn.readLine())) {
-
-					}
 			} while (myAcc == null);
 			sockIn.close();
 			sockOut.close();
