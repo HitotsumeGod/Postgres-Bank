@@ -147,25 +147,39 @@ class Screen extends JFrame {
 		Screen newScreen = new Screen();
 		JPanel namePanel, accountIDPanel, balancePanel, linkedAccountsPanel, interestRatePanel;
 		JLabel nameTitleLabel, accountTitleLabel, balanceTitleLabel, accountsTitleLabel, interestTitleLabel, nameLabel, accountLabel, balanceLabel, accountsLabel, interestLabel;
+		EmptyBorder blockBorder, labelBorder;
 		Font libera = new Font("Nimbus Mono PS", Font.BOLD, 16);
+		ArrayList<JPanel> panelList = new ArrayList<>();
 		ArrayList<JLabel> labelList = new ArrayList<>();
 		
-		namePanel = accountIDPanel = balancePanel = linkedAccountsPanel = interestRatePanel = null;
 		nameTitleLabel = accountTitleLabel = balanceTitleLabel = accountsTitleLabel = interestTitleLabel = nameLabel = accountLabel = balanceLabel = accountsLabel = interestLabel = null;
-		namePanel = new JPanel(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
-		accountIDPanel = new JPanel(new BoxLayout(accountIDPanel, BoxLayout.Y_AXIS));
-		balancePanel = new JPanel(new BoxLayout(balancePanel, BoxLayout.Y_AXIS));
-		linkedAccountsPanel = new JPanel(new BoxLayout(linkedAccountsPanel, BoxLayout.Y_AXIS));
-		interestRatePanel = new JPanel(new BoxLayout(interestRatePanel, BoxLayout.Y_AXIS));
-		nameTitleLabel = new JLabel("Customer Full Name :");
+		namePanel = new JPanel();
+		accountIDPanel = new JPanel();
+		balancePanel = new JPanel();
+		linkedAccountsPanel = new JPanel();
+		interestRatePanel = new JPanel();
+		nameTitleLabel = new JLabel("Customer Last and First Name :");
 		accountTitleLabel = new JLabel("Customer Account Identification Number :");
 		balanceTitleLabel = new JLabel("Customer Account Balance (USD) :");
 		accountsTitleLabel = new JLabel("Linked Accounts :");
 		interestTitleLabel = new JLabel("Account Interest Percentage :");
 		nameLabel = new JLabel(at.getLastName() + ", " + at.getFirstName());
 		accountLabel = new JLabel(String.valueOf(at.getAccountID()));
+		accountsLabel = new JLabel();
 		balanceLabel = new JLabel(String.valueOf(at.getBalance()));
 		interestLabel = new JLabel(String.valueOf(at.getInterestRate()));
+		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+		accountIDPanel.setLayout(new BoxLayout(accountIDPanel, BoxLayout.Y_AXIS));
+		balancePanel.setLayout(new BoxLayout(balancePanel, BoxLayout.Y_AXIS));
+		linkedAccountsPanel.setLayout(new BoxLayout(linkedAccountsPanel, BoxLayout.Y_AXIS));
+		interestRatePanel.setLayout(new BoxLayout(interestRatePanel, BoxLayout.Y_AXIS));
+		blockBorder = new EmptyBorder(50, 50, 50, 50);
+		labelBorder = new EmptyBorder(12, 12, 12, 12);
+		panelList.add(namePanel);
+		panelList.add(accountIDPanel);
+		panelList.add(balancePanel);
+		panelList.add(linkedAccountsPanel);
+		panelList.add(interestRatePanel);
 		labelList.add(nameTitleLabel);
 		labelList.add(accountTitleLabel);
 		labelList.add(balanceTitleLabel);
@@ -176,17 +190,33 @@ class Screen extends JFrame {
 		labelList.add(balanceLabel);
 		labelList.add(accountsLabel);
 		labelList.add(interestLabel);
-		for (JLabel l : labelList)
-			if (l != null)
-				l.setFont(libera);
+		for (JPanel p : panelList)
+			p.setBorder(blockBorder);
+		for (JLabel l : labelList) {
+			if (l == null) {
+				System.out.println("Null element within list. Please rectify.");
+				System.exit(1);
+			}
+			l.setFont(libera);
+			l.setBorder(labelBorder);
+		}
+		namePanel.add(nameTitleLabel);
+		namePanel.add(nameLabel);
+		accountIDPanel.add(accountTitleLabel);
+		accountIDPanel.add(accountLabel);
+		balancePanel.add(balanceTitleLabel);
+		balancePanel.add(balanceLabel);
+		linkedAccountsPanel.add(accountsTitleLabel);
+		linkedAccountsPanel.add(accountsLabel);
+		interestRatePanel.add(interestTitleLabel);
+		interestRatePanel.add(interestLabel);
 		newScreen.add(namePanel);
 		newScreen.add(accountIDPanel);
 		newScreen.add(balancePanel);
 		newScreen.add(linkedAccountsPanel);
 		newScreen.add(interestRatePanel);
-		newScreen.setLayout(new GridLayout(5, 2));
+		newScreen.setLayout(new GridLayout(2, 5, 25, 75));
 		return newScreen;
-		
 		
 	}
 
