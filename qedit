@@ -1,0 +1,4 @@
+#!/bin/bash
+
+read LOCALE
+$EDITOR $LOCALE/src/main/java/$LOCALE

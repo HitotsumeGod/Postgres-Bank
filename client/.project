@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>PeterBank-app</name>
-	<comment>Project PeterBank-app created by Buildship.</comment>
+	<name>client</name>
+	<comment>Project client created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
