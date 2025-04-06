@@ -47,19 +47,24 @@ class NetCom {
 	
 	Account_Template getAccountDetails() throws IOException {
 		
-		String first_name = sockIn.readLine();
-		String last_name = sockIn.readLine();
-		Integer account_number = Integer.parseInt(sockIn.readLine());
-		String passwd = sockIn.readLine();
-		Double balance = Double.parseDouble(sockIn.readLine());
-		return Account_Template.setFirstName(Account_Template.setLastName(Account_Template.setAccountID(Account_Template.setPassword(Account_Template.setBalance(Account_Template.build(), balance), passwd), account_number), last_name), first_name);
+		Account_Template at = new Account_Template();
+		at.setFirstName(sockIn.readLine());
+		at.setLastName(sockIn.readLine());
+		at.setAccountID(Integer.valueOf(sockIn.readLine()));
+		at.setPassword(sockIn.readLine());
+		at.setBalance(Double.valueOf(sockIn.readLine()));
+	//	at.setInterestRate(Float.valueOf(sockIn.readLine()));
+		return at;
+		
 		
 	}
 
 	boolean checkLogin() throws IOException {
 
-		if (sockIn.readLine().equals(LOGIN_ERROR))
+		String s;
+		if ((s = sockIn.readLine()).equals(LOGIN_ERROR))
 				return false;
+		System.out.println(s);
 		return true;
 
 	}

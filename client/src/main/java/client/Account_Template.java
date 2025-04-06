@@ -10,8 +10,6 @@ class Account_Template {
 	private Double balance = null;
 	private Integer[] linkedAccounts = null;
 	private Float interestRate = null;
-
-	private Account_Template() {}
 	
 	String getFirstName() {
 		
@@ -55,60 +53,46 @@ class Account_Template {
 		
 	}
 			
-
-	static Account_Template setFirstName(Account_Template t, String firstName) {
-
-		t.firstName = firstName;
-		return t;
-
+	void setFirstName(String s) {
+		
+		this.firstName = s;
+		
 	}
-
-	static Account_Template setLastName(Account_Template t, String lastName) {
-
-		t.lastName = lastName;
-		return t;
-
+	
+	void setLastName(String s) {
+		
+		this.lastName = s;
+		
 	}
-
-	static Account_Template setAccountID(Account_Template t, Integer accountID) {
-
-		t.accountID = accountID;
-		return t;
-
+	
+	void setAccountID(int i) {
+		
+		this.accountID = i;
+		
 	}
-
-	static Account_Template setPassword(Account_Template t, String passwd) {
-
-		t.passwd = passwd;
-		return t;
-
+	
+	void setPassword(String s) {
+		
+		this.passwd = s;
+		
 	}
-
-	static Account_Template setBalance(Account_Template t, Double balance) {
-
-		t.balance = balance;
-		return t;
-
+	
+	void setBalance(Double d) {
+	
+		this.balance = d;
+	
 	}
-
-	static Account_Template setLinkedAccounts(Account_Template t, Integer[] linkedAccounts) {
-
-		t.linkedAccounts = linkedAccounts;
-		return t;
-
+	
+	void setLinkedAccounts(Integer[] arr) {
+		
+		this.linkedAccounts = arr;
+		
 	}
-
-	static Account_Template setInterestRate(Account_Template t, Float interestRate) {
-
-		t.interestRate = interestRate;
-		return t;
-
-	}
-
-	static Account_Template build() {
-
-		return new Account_Template();
-
+	
+	void setInterestRate(Float f) {
+		
+		this.interestRate = f;
+		
 	}
 
 }

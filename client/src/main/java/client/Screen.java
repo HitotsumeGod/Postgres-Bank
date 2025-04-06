@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 class Screen extends JFrame {
 	
+	private static final String HOST_IP = "127.0.0.1";
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
 	private NetCom com;
@@ -19,10 +20,12 @@ class Screen extends JFrame {
 		private String username;
 		private String password;
 		private Component[] comps;
+		private Screen screen;
 		
-		private BankListener(JPanel panel) {
+		private BankListener(JPanel panel, Screen screen) {
 			
 			this.comps = panel.getComponents();
+			this.screen = screen;
 			
 		}
 		
@@ -30,12 +33,14 @@ class Screen extends JFrame {
 			
 			this.username = ((JTextField) comps[0]).getText();
 			this.password = new String(((JPasswordField) comps[2]).getPassword());
-			com = NetCom.getCom("127.0.0.1", 6666);
+			com = NetCom.getCom(HOST_IP, 6666);
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
-				if (com.checkLogin())
-					at = com.getAccountDetails();
+				if (com.checkLogin()) {
+					screen = Screen.createAccountScreen(com.getAccountDetails());
+					screen.updateScreen();
+				}
 			} catch (IOException io) {
 				io.printStackTrace();
 			}
@@ -121,14 +126,14 @@ class Screen extends JFrame {
 		imagel.setAlignmentX(CENTER_ALIGNMENT);
 		loginButton.setAlignmentX(CENTER_ALIGNMENT);
 		loginButton.setFont(libera);
-		//userf.addKeyListener(new UF_Listener(userf));
+		userf.addKeyListener(newScreen.new UF_Listener(userf));
 		passf.setEchoChar((char) 0);
-		//passf.addKeyListener(new PF_Listener(passf));
+		passf.addKeyListener(newScreen.new PF_Listener(passf));
 		loginPanel.add(userf);
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
 		loginPanel.add(passf);
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
-		//loginButton.addActionListener(new BankListener(loginPanel));
+		loginButton.addActionListener(newScreen.new BankListener(loginPanel, newScreen));
 		loginPanel.add(loginButton);
 		loginPanel.setPreferredSize(new Dimension(200, 200));
 		loginPanel.setBorder(viewBorder);
@@ -225,6 +230,12 @@ class Screen extends JFrame {
 		this.pack();
 		this.setVisible(true);
 
+	}
+	
+	public Account_Template getAT() {
+		
+		return at;
+		
 	}
 
 }

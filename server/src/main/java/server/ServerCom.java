@@ -7,6 +7,7 @@ import java.sql.*;
 class ServerCom implements Runnable {
 
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
+	private static final String LOGIN_SUCCESS = "0";
 	private ServerSocket ssock = null;
 	private Socket csock = null;
 	private BufferedReader sockIn;
@@ -39,16 +40,23 @@ class ServerCom implements Runnable {
 			do {
 				bankUser = Integer.valueOf(sockIn.readLine());
 				bankPass = sockIn.readLine();
-				if ((myAcc = myBank.login(bankUser, bankPass)) == null) 
+				if ((myAcc = myBank.login(bankUser, bankPass)) == null) {
 					sockOut.write(LOGIN_ERROR, 0, LOGIN_ERROR.length());
-				queryForm = String.format("SELECT balance FROM accounts WHERE account_number=%d", myAcc.getID());
-				rs = myBank.queryIt(queryForm);
-				rs.next();
-				System.out.println(rs.getString(1));
-				sockOut.write('D' + rs.getString(1), 0, 1 + rs.getString(1).length());
-				sockOut.flush();
-				rs.close();
+					sockOut.flush();
+				}
 			} while (myAcc == null);
+			sockOut.write(LOGIN_SUCCESS, 0, LOGIN_SUCCESS.length()); 	
+			sockOut.newLine();
+			sockOut.flush();
+			queryForm = "SELECT accounts.first_name, accounts.last_name, accounts.account_number, accounts.passwd, accounts.balance::numeric, accounts.linked_accounts, accounts.interest_rate FROM accounts WHERE accounts.account_number=" + myAcc.getID(); 
+			rs = myBank.queryIt(queryForm);
+			while (rs.next()) {
+				for (int i = 1; i <= 5; i++) {
+					sockOut.write(rs.getString(i), 0, rs.getString(i).length());
+					sockOut.newLine();
+				}
+				sockOut.flush();
+			}
 			sockIn.close();
 			sockOut.close();
 		} catch (IOException | SQLException io) {
