@@ -37,6 +37,14 @@ java {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += fileTree(dir: 'server/src/', include: '**/*.java')
+        }
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'server.Pilot'
