@@ -3,7 +3,7 @@ package server;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.FileReader;
+import java.io.FileReader;	
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -59,7 +59,7 @@ class ServerCommunicator implements Runnable {
 			sockOut.write(LOGIN_SUCCESS, 0, LOGIN_SUCCESS.length()); 	
 			sockOut.newLine();
 			sockOut.flush();
-			queryForm = "SELECT accounts.first_name, accounts.last_name, accounts.account_number, accounts.passwd, accounts.balance::numeric, accounts.linked_accounts, accounts.interest_rate FROM accounts WHERE accounts.account_number=" + myAcc.getID(); 
+			queryForm = "SELECT accounts.first_name, accounts.last_name, accounts.account_number, accounts.passwd, accounts.balance::numeric, FROM accounts WHERE accounts.account_number=" + myAcc.getID(); 
 			rs = myBank.queryIt(queryForm);
 			while (rs.next()) {
 				for (int i = 1; i <= 5; i++) {

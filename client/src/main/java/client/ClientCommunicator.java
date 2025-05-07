@@ -53,7 +53,6 @@ class ClientCommunicator {
 		at.setAccountID(Integer.valueOf(sockIn.readLine()));
 		at.setPassword(sockIn.readLine());
 		at.setBalance(Double.valueOf(sockIn.readLine()));
-	//	at.setInterestRate(Float.valueOf(sockIn.readLine()));
 		return at;
 		
 		

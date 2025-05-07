@@ -12,7 +12,7 @@ class Screen extends JFrame {
 	private static final String HOST_IP = "127.0.0.1";
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
-	private NetCom com;
+	private ClientCommunicator com;
 	private Account_Template at;
 	
 	private class BankListener implements ActionListener {
@@ -33,7 +33,7 @@ class Screen extends JFrame {
 			
 			this.username = ((JTextField) comps[0]).getText();
 			this.password = new String(((JPasswordField) comps[2]).getPassword());
-			com = NetCom.getCom(HOST_IP, 6666);
+			com = ClientCommunicator.getCom(HOST_IP, 6666);
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
