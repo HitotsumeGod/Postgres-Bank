@@ -18,7 +18,7 @@ class ServerCommunicator implements Runnable {
 
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
 	private static final String LOGIN_SUCCESS = "0";
-	private static final String LOGFILE_PATH = "server/src/resources/serv.log";
+	private static final String LOGFILE_PATH = "src/resources/serv.log";
 	private Logger log;
 	private ServerSocket ssock = null;
 	private Socket csock = null;
@@ -39,7 +39,7 @@ class ServerCommunicator implements Runnable {
 		ResultSet rs;
 		String bankPass, queryForm;
 		int bankUser, c;
-		
+	
 		try {
 			myBank = new Bank_DB();
 		} catch (SQLException se) {
@@ -52,6 +52,8 @@ class ServerCommunicator implements Runnable {
 				bankUser = Integer.valueOf(sockIn.readLine());
 				bankPass = sockIn.readLine();
 				if ((myAcc = myBank.login(bankUser, bankPass)) == null) {
+					System.out.println(bankUser);
+					System.out.println(bankPass);
 					sockOut.write(LOGIN_ERROR, 0, LOGIN_ERROR.length());
 					sockOut.flush();
 				}
@@ -59,7 +61,7 @@ class ServerCommunicator implements Runnable {
 			sockOut.write(LOGIN_SUCCESS, 0, LOGIN_SUCCESS.length()); 	
 			sockOut.newLine();
 			sockOut.flush();
-			queryForm = "SELECT accounts.first_name, accounts.last_name, accounts.account_number, accounts.passwd, accounts.balance::numeric, FROM accounts WHERE accounts.account_number=" + myAcc.getID(); 
+			queryForm = "SELECT accounts.first_name, accounts.last_name, accounts.account_number, accounts.passwd, accounts.balance::numeric FROM accounts WHERE accounts.account_number=" + myAcc.getID(); 
 			rs = myBank.queryIt(queryForm);
 			while (rs.next()) {
 				for (int i = 1; i <= 5; i++) {
@@ -77,11 +79,11 @@ class ServerCommunicator implements Runnable {
 
 	}
 
-	private boolean handleClientRequest(BankProfile bp) throws IOException {
+	private boolean handleClientRequest(BankProfile bp) throws IOException, SQLException {
 
 		String am;
 
-		switch(sockIn.readLine()) {
+		switch((am = sockIn.readLine())) {
 		case "DEPOSIT":
 			bp.getBank().makeDeposit(Double.valueOf((am = sockIn.readLine())), Integer.valueOf(sockIn.readLine()));
 			sockOut.write(am, 0, am.length());			//WRITE THE DEPOSITED AMOUNT BACK TO THE CLIENT TO ENSURE SANITY
@@ -99,6 +101,7 @@ class ServerCommunicator implements Runnable {
 		case "LOGOUT":
 			break;
 		default:
+			System.out.println(am);
 			return false;
 		}
 		return true;
@@ -109,11 +112,12 @@ class ServerCommunicator implements Runnable {
 		BankProfile currentProfile;
 
 		try {
+			log.write("ServerCommunicator online.");
 			currentProfile = attemptLogin();
 			log.write(String.format("Client %d successfully logged in to account.", currentProfile.getAccount().getID()));
 			while (handleClientRequest(currentProfile));
 			log.write(String.format("Client %d has closed the connection.", currentProfile.getAccount().getID()));
-		} catch (IOException io) {
+		} catch (IOException | SQLException io) {
 			io.printStackTrace();
 		}
 

@@ -1,15 +1,19 @@
 package server;
 
-import java.sql.SQLException
+import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Properties;
 
 class Bank_DB {
 	
-	private Connection corecon = null;
 	private static final String psqlServer = "jdbc:postgresql://127.0.0.1/bank";
 	private static final String psqlUser = "postgres";
 	private static final String psqlPass = "muser";
+	private Connection corecon = null;
 	
 	Bank_DB() throws SQLException {
 	
@@ -20,10 +24,10 @@ class Bank_DB {
 		
 	}
 
-	void makeDeposit(double amount, int id) {
+	void makeDeposit(double amount, int id) throws SQLException {
 
-		Statement st;
-		ResultSet rs;
+		Statement st = null;
+		ResultSet rs = null;
 
 		rs = st.executeQuery(String.format("SELECT balance::numeric FROM accounts WHERE account_number = %d", id));
 		st.executeUpdate(String.format("UPDATE accounts SET balance = %f WHERE account_number = %d", rs.getDouble(5) + amount, id));
@@ -32,10 +36,10 @@ class Bank_DB {
 
 	}
 
-	void makeWithdrawal(double amount, int id) {
+	void makeWithdrawal(double amount, int id) throws SQLException {
 
-		Statement st;
-		ResultSet rs;
+		Statement st = null;
+		ResultSet rs = null;
 
 		rs = st.executeQuery(String.format("SELECT balance::numeric FROM accounts WHERE account_number = %d", id));
 		st.executeUpdate(String.format("UPDATE accounts SET balance = %f WHERE account_number = %d", rs.getDouble(5) - amount, id));
@@ -50,6 +54,7 @@ class Bank_DB {
 		ResultSet rs;
 		rs = null;
 		st = corecon.createStatement();
+		System.out.println(query);
 		if ((rs = st.executeQuery(query)) == null)
 			throw new NullPointerException();
 		return rs;
@@ -90,21 +95,6 @@ class Bank_DB {
 		st.close();
 		corecon.close();
 		return false;
-	}
-	
-	String mkTable(String tableName, HashMap<String, String> tableVals) throws SQLException {
-		
-		Statement st;
-		String query;
-		query = String.format("CREATE TABLE %s (", tableName);
-		for (String key : tableVals.keySet()) {
-			query += key + ' ';
-			query += tableVals.get(key) + ", ";
-		}
-		st = corecon.createStatement();
-		st.executeUpdate(query.substring(0, query.length() - 2) + ')');
-		return "";
-		
 	}
 
 }

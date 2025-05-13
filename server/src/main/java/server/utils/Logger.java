@@ -13,6 +13,7 @@ public class Logger {
 	public void write(String toWrite) throws IOException {
 
 		writer.write(toWrite, 0, toWrite.length());
+		writer.flush();
 
 	}
 

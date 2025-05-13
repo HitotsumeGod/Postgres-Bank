@@ -35,6 +35,7 @@ class ClientCommunicator {
 
 	void writeLogin(int accountNum, String passwd) throws IOException {
 
+		System.out.println("Writing login values to server.");
 		String sform = String.valueOf(accountNum);
 		sockOut.write(sform, 0, sform.length());
 		sockOut.newLine();
