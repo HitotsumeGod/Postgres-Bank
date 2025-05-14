@@ -8,12 +8,12 @@ import java.io.OutputStreamWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.time.LocalTime;
 import org.peter.utils.Logger;
 
 class ClientCommunicator {
 	
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
+	private static final String LOGFILE_PATH = "src/resources/serv.log";
 	private Logger log;
 	private String hostName;
 	private int hostPort;
@@ -24,10 +24,10 @@ class ClientCommunicator {
 	private ClientCommunicator(String hostName, int hostPort) {
 	
 		try {
-			this.log = new Logger(new File("src/resources/serv.log"));
+			this.log = new Logger(new File(LOGFILE_PATH));
 			this.hostName = hostName;
 			this.hostPort = hostPort;
-			this.log.write(LocalTime.now() + " : Client established.");
+			this.log.write("Client established.");
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -40,7 +40,7 @@ class ClientCommunicator {
 			ssock = new Socket(hostName, hostPort);
 			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
 			sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
-			log.write(LocalTime.now() + " : Client obtained connection with foreign host.");
+			log.write("Client obtained connection with foreign host.");
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -56,7 +56,7 @@ class ClientCommunicator {
 		sockOut.write(passwd, 0, passwd.length());
 		sockOut.newLine();
 		sockOut.flush();
-		log.write(LocalTime.now() + " : Client wrote login values to server.");
+		log.write("Client wrote login values to server.");
 
 	}
 	
@@ -68,6 +68,7 @@ class ClientCommunicator {
 		at.setAccountID(Integer.valueOf(sockIn.readLine()));
 		at.setPassword(sockIn.readLine());
 		at.setBalance(Double.valueOf(sockIn.readLine()));
+		log.write("Client accepted login details from server.");
 		return at;
 		
 		
@@ -76,9 +77,11 @@ class ClientCommunicator {
 	boolean checkLogin() throws IOException {
 
 		String s;
-		if ((s = sockIn.readLine()).equals(LOGIN_ERROR))
-				return false;
-		System.out.println(s);
+		if ((s = sockIn.readLine()).equals(LOGIN_ERROR)) {
+			log.write("Client login attempt failed.");
+			return false;
+		}
+		log.write("Client login attempt succeeded.");
 		return true;
 
 	}

@@ -37,12 +37,9 @@ class Screen extends JFrame {
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
-				System.out.println("Login details written.");
 				if (com.checkLogin()) {
 					screen = Screen.createAccountScreen(com.getAccountDetails());
 					screen.updateScreen();
-				} else {
-					System.out.println("Login failed.");
 				}
 			} catch (IOException io) {
 				io.printStackTrace();

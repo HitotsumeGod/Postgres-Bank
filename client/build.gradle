@@ -43,7 +43,14 @@ application {
     mainClass = 'client.Pilot'
 }
 
+task cleanup(type: Delete) {
+	delete 'src/resources/serv.log'
+}	
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+tasks.named('clean') {
+	dependsOn 'cleanup'
 }

@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import org.peter.utils.Logger;
 
 class ServerCommunicator implements Runnable {
@@ -30,7 +29,6 @@ class ServerCommunicator implements Runnable {
 
 		this.ssock = new ServerSocket(6666); 
 		this.log = new Logger(new File(LOGFILE_PATH));
-		this.log.write(LocalTime.now() + " : Server established and ready to serve.");
 
 	}
 
@@ -114,7 +112,7 @@ class ServerCommunicator implements Runnable {
 		BankProfile currentProfile;
 
 		try {
-			log.write("ServerCommunicator online.");
+			log.write("Client handler up-and-running.");
 			currentProfile = attemptLogin();
 			log.write(String.format("Client %d successfully logged in to account.", currentProfile.getAccount().getID()));
 			while (handleClientRequest(currentProfile));
@@ -130,6 +128,7 @@ class ServerCommunicator implements Runnable {
 		csock = ssock.accept();
 		if (csock == null)	
 			return false;
+		log.write("Server has received a client connection.");
 		return true;
 
 	}
