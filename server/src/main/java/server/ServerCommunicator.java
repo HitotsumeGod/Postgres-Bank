@@ -12,7 +12,8 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import server.utils.Logger;
+import java.time.LocalTime;
+import org.peter.utils.Logger;
 
 class ServerCommunicator implements Runnable {
 
@@ -27,8 +28,9 @@ class ServerCommunicator implements Runnable {
 
 	private ServerCommunicator() throws IOException { 
 
-		ssock = new ServerSocket(6666); 
-		log = new Logger(new File(LOGFILE_PATH));
+		this.ssock = new ServerSocket(6666); 
+		this.log = new Logger(new File(LOGFILE_PATH));
+		this.log.write(LocalTime.now() + " : Server established and ready to serve.");
 
 	}
 

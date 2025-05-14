@@ -1,13 +1,20 @@
 package client;
 
-import java.net.*;
+import java.net.Socket;
 import java.time.Duration;
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.time.LocalTime;
+import org.peter.utils.Logger;
 
 class ClientCommunicator {
 	
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
+	private Logger log;
 	private String hostName;
 	private int hostPort;
 	private Socket ssock;
@@ -15,9 +22,15 @@ class ClientCommunicator {
 	private BufferedReader sockIn;
 	
 	private ClientCommunicator(String hostName, int hostPort) {
-		
-		this.hostName = hostName;
-		this.hostPort = hostPort;
+	
+		try {
+			this.log = new Logger(new File("src/resources/serv.log"));
+			this.hostName = hostName;
+			this.hostPort = hostPort;
+			this.log.write(LocalTime.now() + " : Client established.");
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
 		
 	}
 	
@@ -27,6 +40,7 @@ class ClientCommunicator {
 			ssock = new Socket(hostName, hostPort);
 			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
 			sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
+			log.write(LocalTime.now() + " : Client obtained connection with foreign host.");
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -35,7 +49,6 @@ class ClientCommunicator {
 
 	void writeLogin(int accountNum, String passwd) throws IOException {
 
-		System.out.println("Writing login values to server.");
 		String sform = String.valueOf(accountNum);
 		sockOut.write(sform, 0, sform.length());
 		sockOut.newLine();
@@ -43,6 +56,7 @@ class ClientCommunicator {
 		sockOut.write(passwd, 0, passwd.length());
 		sockOut.newLine();
 		sockOut.flush();
+		log.write(LocalTime.now() + " : Client wrote login values to server.");
 
 	}
 	

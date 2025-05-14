@@ -1,4 +1,4 @@
-package server.utils;
+package org.peter.utils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,10 +8,15 @@ public class Logger {
 
 	private final FileWriter writer;
 
-	public Logger(File logfile) throws IOException { writer = new FileWriter(logfile); }
+	public Logger(File logfile) throws IOException { 
+		
+		logfile.createNewFile();	
+		writer = new FileWriter(logfile);
+       
+	}
 
 	public void write(String toWrite) throws IOException {
-
+		
 		writer.write(toWrite, 0, toWrite.length());
 		writer.flush();
 

@@ -9,7 +9,6 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java' 
-    id 'eclipse'
 }
 
 repositories {
@@ -28,20 +27,14 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation libs.postgres.jdbc
+
+    implementation project(':common_utils')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(23)
-    }
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs += fileTree(dir: 'server/src/', include: '**/*.java')
-        }
     }
 }
 
