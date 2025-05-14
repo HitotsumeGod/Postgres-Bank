@@ -79,29 +79,33 @@ class ServerCommunicator implements Runnable {
 
 	}
 
-	private boolean handleClientRequest(BankProfile bp) throws IOException, SQLException {
+	private boolean handleClientRequest(BankProfile bp) throws SQLException {
 
 		String am;
-
-		switch((am = sockIn.readLine())) {
-		case "DEPOSIT":
-			bp.getBank().makeDeposit(Double.valueOf((am = sockIn.readLine())), Integer.valueOf(sockIn.readLine()));
-			sockOut.write(am, 0, am.length());			//WRITE THE DEPOSITED AMOUNT BACK TO THE CLIENT TO ENSURE SANITY
-			sockOut.newLine();
-			sockOut.flush();
-			break;
-		case "WITHDRAW":
-			bp.getBank().makeWithdrawal(Double.valueOf((am = sockIn.readLine())), Integer.valueOf(sockIn.readLine()));
-			sockOut.write(am, 0, am.length());			//DITTO
-			sockOut.newLine();
-			sockOut.flush();
-			break;
-		case "ACCOUNT_DETAILS":
-			break;
-		case "LOGOUT":
-			break;
-		default:
-			System.out.println(am);
+		
+		try {
+			switch((am = sockIn.readLine())) {
+			case "DEPOSIT":
+				bp.getBank().makeDeposit(Double.valueOf((am = sockIn.readLine())), Integer.valueOf(sockIn.readLine()));
+				sockOut.write(am, 0, am.length());												//WRITE THE DEPOSITED AMOUNT BACK TO THE CLIENT TO ENSURE SANITY
+				sockOut.newLine();
+				sockOut.flush();
+				break;
+			case "WITHDRAW":
+				bp.getBank().makeWithdrawal(Double.valueOf((am = sockIn.readLine())), Integer.valueOf(sockIn.readLine()));
+				sockOut.write(am, 0, am.length());												//DITTO
+				sockOut.newLine();
+				sockOut.flush();
+				break;
+			case "ACCOUNT_DETAILS":
+				break;
+			case "LOGOUT":
+				break;
+			default:
+				System.out.println(am);
+				return false;
+			}
+		} catch (IOException io) {
 			return false;
 		}
 		return true;
@@ -117,18 +121,25 @@ class ServerCommunicator implements Runnable {
 			log.write(String.format("Client %d successfully logged in to account.", currentProfile.getAccount().getID()));
 			while (handleClientRequest(currentProfile));
 			log.write(String.format("Client %d has closed the connection.", currentProfile.getAccount().getID()));
+			sockIn.close();
+			sockOut.close();
+			csock.close();
 		} catch (IOException | SQLException io) {
 			io.printStackTrace();
 		}
 
 	}
 
-	boolean handle() throws IOException {
+	boolean handle() {
 
-		csock = ssock.accept();
-		if (csock == null)	
-			return false;
-		log.write("Server has received a client connection.");
+		try {
+			csock = ssock.accept();
+			if (csock == null)	
+				return false;
+			log.write("Server has received a client connection.");
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
 		return true;
 
 	}

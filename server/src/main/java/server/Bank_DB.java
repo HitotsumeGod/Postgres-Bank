@@ -54,7 +54,6 @@ class Bank_DB {
 		ResultSet rs;
 		rs = null;
 		st = corecon.createStatement();
-		System.out.println(query);
 		if ((rs = st.executeQuery(query)) == null)
 			throw new NullPointerException();
 		return rs;

@@ -5,3 +5,6 @@
 build
 
 *.class
+
+#project-specific
+*.log
