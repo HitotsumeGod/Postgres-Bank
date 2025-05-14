@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'PeterBank'
-include('client', 'server')
+include('client', 'server', 'common_utils')

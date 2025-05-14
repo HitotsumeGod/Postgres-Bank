@@ -9,7 +9,6 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java' 
-    id 'eclipse'
 }
 
 repositories {
@@ -28,6 +27,8 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation libs.postgres.jdbc
+    
+    implementation project(':common_utils')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -42,7 +43,14 @@ application {
     mainClass = 'client.Pilot'
 }
 
+task cleanup(type: Delete) {
+	delete 'src/resources/serv.log'
+}	
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+tasks.named('clean') {
+	dependsOn 'cleanup'
 }

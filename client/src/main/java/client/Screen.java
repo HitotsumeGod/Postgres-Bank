@@ -12,7 +12,7 @@ class Screen extends JFrame {
 	private static final String HOST_IP = "127.0.0.1";
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
-	private NetCom com;
+	private ClientCommunicator com;
 	private Account_Template at;
 	
 	private class BankListener implements ActionListener {
@@ -33,7 +33,7 @@ class Screen extends JFrame {
 			
 			this.username = ((JTextField) comps[0]).getText();
 			this.password = new String(((JPasswordField) comps[2]).getPassword());
-			com = NetCom.getCom(HOST_IP, 6666);
+			com = ClientCommunicator.getCom(HOST_IP, 6666);
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
@@ -150,8 +150,9 @@ class Screen extends JFrame {
 	public static Screen createAccountScreen(Account_Template at) {
 		
 		Screen newScreen = new Screen();
-		JPanel namePanel, accountIDPanel, balancePanel, linkedAccountsPanel, interestRatePanel;
+		JPanel namePanel, accountIDPanel, balancePanel, linkedAccountsPanel, interestRatePanel, buttonsPanel;
 		JLabel nameTitleLabel, accountTitleLabel, balanceTitleLabel, accountsTitleLabel, interestTitleLabel, nameLabel, accountLabel, balanceLabel, accountsLabel, interestLabel;
+		JButton depositButton, withdrawButton, accountButton, logoutButton;
 		EmptyBorder blockBorder, labelBorder;
 		Font libera = new Font("Nimbus Mono PS", Font.BOLD, 16);
 		ArrayList<JPanel> panelList = new ArrayList<>();
@@ -163,6 +164,7 @@ class Screen extends JFrame {
 		balancePanel = new JPanel();
 		linkedAccountsPanel = new JPanel();
 		interestRatePanel = new JPanel();
+		buttonsPanel = new JPanel();
 		nameTitleLabel = new JLabel("Customer Last and First Name :");
 		accountTitleLabel = new JLabel("Customer Account Identification Number :");
 		balanceTitleLabel = new JLabel("Customer Account Balance (USD) :");
@@ -180,6 +182,10 @@ class Screen extends JFrame {
 		interestRatePanel.setLayout(new BoxLayout(interestRatePanel, BoxLayout.Y_AXIS));
 		blockBorder = new EmptyBorder(50, 50, 50, 50);
 		labelBorder = new EmptyBorder(12, 12, 12, 12);
+		depositButton = new JButton("DEPOSIT");
+		withdrawButton = new JButton("WITHDRAW");
+		accountButton = new JButton("MY ACCOUNT");
+		logoutButton = new JButton("LOGOUT");
 		panelList.add(namePanel);
 		panelList.add(accountIDPanel);
 		panelList.add(balancePanel);
@@ -215,11 +221,16 @@ class Screen extends JFrame {
 		linkedAccountsPanel.add(accountsLabel);
 		interestRatePanel.add(interestTitleLabel);
 		interestRatePanel.add(interestLabel);
+		buttonsPanel.add(depositButton);
+		buttonsPanel.add(withdrawButton);
+		buttonsPanel.add(accountButton);
+		buttonsPanel.add(logoutButton);
 		newScreen.add(namePanel);
 		newScreen.add(accountIDPanel);
 		newScreen.add(balancePanel);
 		newScreen.add(linkedAccountsPanel);
 		newScreen.add(interestRatePanel);
+		newScreen.add(buttonsPanel);
 		newScreen.setLayout(new GridLayout(2, 5, 25, 75));
 		return newScreen;
 		

@@ -1,15 +1,19 @@
 package server;
 
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Properties;
 
 class Bank_DB {
 	
+	private static final String psqlServer = "jdbc:postgresql://127.0.0.1/bank";
+	private static final String psqlUser = "postgres";
+	private static final String psqlPass = "muser";
 	private Connection corecon = null;
-	private final String psqlServer = "jdbc:postgresql://127.0.0.1/bank";
-	private final String psqlUser = "postgres";
-	private final String psqlPass = "muser";
 	
 	Bank_DB() throws SQLException {
 	
@@ -18,6 +22,30 @@ class Bank_DB {
 		opts.setProperty("password", psqlPass);
 		corecon = DriverManager.getConnection(psqlServer, opts);
 		
+	}
+
+	void makeDeposit(double amount, int id) throws SQLException {
+
+		Statement st = null;
+		ResultSet rs = null;
+
+		rs = st.executeQuery(String.format("SELECT balance::numeric FROM accounts WHERE account_number = %d", id));
+		st.executeUpdate(String.format("UPDATE accounts SET balance = %f WHERE account_number = %d", rs.getDouble(5) + amount, id));
+		st.close();
+		rs.close();
+
+	}
+
+	void makeWithdrawal(double amount, int id) throws SQLException {
+
+		Statement st = null;
+		ResultSet rs = null;
+
+		rs = st.executeQuery(String.format("SELECT balance::numeric FROM accounts WHERE account_number = %d", id));
+		st.executeUpdate(String.format("UPDATE accounts SET balance = %f WHERE account_number = %d", rs.getDouble(5) - amount, id));
+		st.close();
+		rs.close();
+
 	}
 
 	ResultSet queryIt(String query) throws SQLException {
@@ -67,20 +95,4 @@ class Bank_DB {
 		corecon.close();
 		return false;
 	}
-	
-	String mkTable(String tableName, HashMap<String, String> tableVals) throws SQLException {
-		
-		Statement st;
-		String query;
-		query = String.format("CREATE TABLE %s (", tableName);
-		for (String key : tableVals.keySet()) {
-			query += key + ' ';
-			query += tableVals.get(key) + ", ";
-		}
-		st = corecon.createStatement();
-		st.executeUpdate(query.substring(0, query.length() - 2) + ')');
-		return "";
-		
-	}
-
 }
