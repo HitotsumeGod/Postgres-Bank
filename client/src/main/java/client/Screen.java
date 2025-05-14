@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 class Screen extends JFrame {
 	
-	private static final String HOST_IP = "127.0.0.1";
 	private static final int STRUTHEIGHT = 25;
 	private static final int STRUTWIDTH = 25;
 	private ClientCommunicator com;
@@ -17,18 +16,20 @@ class Screen extends JFrame {
 	
 	private class BankListener implements ActionListener {
 		
+		private final ClientCommunicator com;
 		private String username;
 		private String password;
 		private JTextField f1;
 		private JPasswordField f2;
 		private Screen screen;
 		
-		private BankListener(JPanel panel, Screen screen) {
+		private BankListener(JPanel panel, Screen screen, ClientCommunicator com) {
 			
 			Component[] comps = panel.getComponents();
 			this.f1 = (JTextField) comps[0];
 			this.f2 = (JPasswordField) comps[2];
 			this.screen = screen;
+			this.com = com;
 			
 		}
 		
@@ -36,14 +37,11 @@ class Screen extends JFrame {
 		
 			this.username = f1.getText();
 			this.password = new String(f2.getPassword());
-			com = ClientCommunicator.getCom(HOST_IP, 6666);
-			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
 				if (com.checkLogin()) {
-					System.out.println("WE LOGGED IN BOYS");
-					screen = Screen.createAccountScreen(com.getAccountDetails());
-					screen.updateScreen();
+					Screen sn = Screen.createAccountScreen(com.getAccountDetails());
+					sn.updateScreen();
 				} else 
 					f1.setText("LOGIN FAILED");
 			} catch (IOException io) {
@@ -110,7 +108,7 @@ class Screen extends JFrame {
 	
 	private Screen() {}
 	
-	public static Screen createLoginScreen() {
+	public static Screen createLoginScreen(ClientCommunicator com) {
 		
 		Screen newScreen = new Screen();
 		Font libera = new Font("Nimbus Mono PS", Font.BOLD, 16);
@@ -138,7 +136,7 @@ class Screen extends JFrame {
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
 		loginPanel.add(passf);
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
-		loginButton.addActionListener(newScreen.new BankListener(loginPanel, newScreen));
+		loginButton.addActionListener(newScreen.new BankListener(loginPanel, newScreen, com));
 		loginPanel.add(loginButton);
 		loginPanel.setPreferredSize(new Dimension(200, 200));
 		loginPanel.setBorder(viewBorder);
@@ -162,7 +160,7 @@ class Screen extends JFrame {
 		Font libera = new Font("Nimbus Mono PS", Font.BOLD, 16);
 		ArrayList<JPanel> panelList = new ArrayList<>();
 		ArrayList<JLabel> labelList = new ArrayList<>();
-		
+			
 		nameTitleLabel = accountTitleLabel = balanceTitleLabel = accountsTitleLabel = interestTitleLabel = nameLabel = accountLabel = balanceLabel = accountsLabel = interestLabel = null;
 		namePanel = new JPanel();
 		accountIDPanel = new JPanel();

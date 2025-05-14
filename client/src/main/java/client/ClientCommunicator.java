@@ -15,8 +15,6 @@ class ClientCommunicator {
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
 	private static final String LOGFILE_PATH = "src/resources/serv.log";
 	private Logger log;
-	private String hostName;
-	private int hostPort;
 	private Socket ssock;
 	private BufferedWriter sockOut;
 	private BufferedReader sockIn;
@@ -25,28 +23,16 @@ class ClientCommunicator {
 	
 		try {
 			this.log = new Logger(new File(LOGFILE_PATH));
-			this.hostName = hostName;
-			this.hostPort = hostPort;
-			this.log.write("Client established.");
+			this.ssock = new Socket(hostName, hostPort);
+			this.sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
+			this.sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
+			this.log.write("Client established and connected to remote server.");
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
 		
 	}
 	
-	void getConnection() {
-		
-		try {
-			ssock = new Socket(hostName, hostPort);
-			sockOut = new BufferedWriter(new OutputStreamWriter(ssock.getOutputStream()));
-			sockIn = new BufferedReader(new InputStreamReader(ssock.getInputStream()));
-			log.write("Client obtained connection with foreign host.");
-		} catch (IOException io) {
-			io.printStackTrace();
-		}
-		
-	}
-
 	void writeLogin(int accountNum, String passwd) throws IOException {
 
 		String sform = String.valueOf(accountNum);
