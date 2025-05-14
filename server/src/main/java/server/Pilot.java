@@ -17,12 +17,10 @@ public class Pilot {
 			sc = ServerCommunicator.getCom();
 			ex = Executors.newCachedThreadPool();
 			n = 0;
-			while (n++ < 5) {
-				if (sc.handle()) {
+			while (true) {
+				if (sc.handle())
 					ex.execute(sc);
-				}
 			}
-			ex.shutdown();
 		} catch (IOException io) {
 			io.printStackTrace();
 		}

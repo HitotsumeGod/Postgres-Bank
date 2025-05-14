@@ -48,16 +48,15 @@ class ServerCommunicator implements Runnable {
 		try {
 			sockIn = new BufferedReader(new InputStreamReader(csock.getInputStream()));
 			sockOut = new BufferedWriter(new OutputStreamWriter(csock.getOutputStream()));
-			do {
+			while (myAcc == null) {
 				bankUser = Integer.valueOf(sockIn.readLine());
 				bankPass = sockIn.readLine();
 				if ((myAcc = myBank.login(bankUser, bankPass)) == null) {
-					System.out.println(bankUser);
-					System.out.println(bankPass);
 					sockOut.write(LOGIN_ERROR, 0, LOGIN_ERROR.length());
+					sockOut.newLine();
 					sockOut.flush();
 				}
-			} while (myAcc == null);
+			}
 			sockOut.write(LOGIN_SUCCESS, 0, LOGIN_SUCCESS.length()); 	
 			sockOut.newLine();
 			sockOut.flush();

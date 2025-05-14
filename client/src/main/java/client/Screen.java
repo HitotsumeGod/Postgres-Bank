@@ -19,28 +19,33 @@ class Screen extends JFrame {
 		
 		private String username;
 		private String password;
-		private Component[] comps;
+		private JTextField f1;
+		private JPasswordField f2;
 		private Screen screen;
 		
 		private BankListener(JPanel panel, Screen screen) {
 			
-			this.comps = panel.getComponents();
+			Component[] comps = panel.getComponents();
+			this.f1 = (JTextField) comps[0];
+			this.f2 = (JPasswordField) comps[2];
 			this.screen = screen;
 			
 		}
 		
 		public void actionPerformed(ActionEvent e) {
-			
-			this.username = ((JTextField) comps[0]).getText();
-			this.password = new String(((JPasswordField) comps[2]).getPassword());
+		
+			this.username = f1.getText();
+			this.password = new String(f2.getPassword());
 			com = ClientCommunicator.getCom(HOST_IP, 6666);
 			com.getConnection();
 			try {
 				com.writeLogin(Integer.parseInt(username), password);
 				if (com.checkLogin()) {
+					System.out.println("WE LOGGED IN BOYS");
 					screen = Screen.createAccountScreen(com.getAccountDetails());
 					screen.updateScreen();
-				}
+				} else 
+					f1.setText("LOGIN FAILED");
 			} catch (IOException io) {
 				io.printStackTrace();
 			}
