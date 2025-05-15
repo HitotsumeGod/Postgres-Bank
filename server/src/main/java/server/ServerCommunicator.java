@@ -57,6 +57,7 @@ class ServerCommunicator implements Runnable {
 					sockOut.flush();
 				}
 			}
+			System.out.println(csock.isConnected());
 			sockOut.write(LOGIN_SUCCESS, 0, LOGIN_SUCCESS.length()); 	
 			sockOut.newLine();
 			sockOut.flush();

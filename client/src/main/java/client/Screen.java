@@ -14,98 +14,6 @@ class Screen extends JFrame {
 	private ClientCommunicator com;
 	private Account_Template at;
 	
-	private class BankListener implements ActionListener {
-		
-		private final ClientCommunicator com;
-		private String username;
-		private String password;
-		private JTextField f1;
-		private JPasswordField f2;
-		private Screen screen;
-		
-		private BankListener(JPanel panel, Screen screen, ClientCommunicator com) {
-			
-			Component[] comps = panel.getComponents();
-			this.f1 = (JTextField) comps[0];
-			this.f2 = (JPasswordField) comps[2];
-			this.screen = screen;
-			this.com = com;
-			
-		}
-		
-		public void actionPerformed(ActionEvent e) {
-		
-			this.username = f1.getText();
-			this.password = new String(f2.getPassword());
-			try {
-				com.writeLogin(Integer.parseInt(username), password);
-				if (com.checkLogin()) {
-					Screen sn = Screen.createAccountScreen(com.getAccountDetails());
-					sn.updateScreen();
-				} else 
-					f1.setText("LOGIN FAILED");
-			} catch (IOException io) {
-				io.printStackTrace();
-			}
-			
-		}
-		
-	}
-
-	private class PF_Listener implements KeyListener {
-
-		private final JPasswordField jpf;
-
-		private PF_Listener(JPasswordField jpf) {
-
-			this.jpf = jpf;
-
-		}
-
-		public void keyPressed(KeyEvent key) {
-
-			if (jpf.getEchoChar() != '*') {
-				jpf.setText(null);
-				jpf.setEchoChar('*');
-				jpf.updateUI();
-			}
-
-		}
-
-		public void keyTyped(KeyEvent key) {}
-
-		public void keyReleased(KeyEvent key) {}
-
-	}
-	
-	private class UF_Listener implements KeyListener {
-
-		private final JTextField jtf;
-		private boolean toDo;
-
-		private UF_Listener(JTextField jtf) {
-
-			this.jtf = jtf;
-			toDo = true;
-
-		}
-
-		public void keyPressed(KeyEvent key) {
-
-				if (toDo) {
-					jtf.setText(null);
-					jtf.updateUI();
-					toDo = false;
-				}
-
-		}
-
-		public void keyTyped(KeyEvent key) {}
-
-		public void keyReleased(KeyEvent key) {}
-
-	}
-	
 	private Screen() {}
 	
 	public static Screen createLoginScreen(ClientCommunicator com) {
@@ -129,14 +37,14 @@ class Screen extends JFrame {
 		imagel.setAlignmentX(CENTER_ALIGNMENT);
 		loginButton.setAlignmentX(CENTER_ALIGNMENT);
 		loginButton.setFont(libera);
-		userf.addKeyListener(newScreen.new UF_Listener(userf));
+		userf.addKeyListener(new UF_Listener(userf));
 		passf.setEchoChar((char) 0);
-		passf.addKeyListener(newScreen.new PF_Listener(passf));
+		passf.addKeyListener(new PF_Listener(passf));
 		loginPanel.add(userf);
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
 		loginPanel.add(passf);
 		loginPanel.add(Box.createVerticalStrut(STRUTHEIGHT));
-		loginButton.addActionListener(newScreen.new BankListener(loginPanel, newScreen, com));
+		loginButton.addActionListener(new BankListener(loginPanel, newScreen, com));
 		loginPanel.add(loginButton);
 		loginPanel.setPreferredSize(new Dimension(200, 200));
 		loginPanel.setBorder(viewBorder);

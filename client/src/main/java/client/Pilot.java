@@ -7,7 +7,8 @@ public class Pilot {
 
 	public static void main(String[] args) {
 
-		Screen sc = Screen.createLoginScreen(ClientCommunicator.getCom(HOST_IP, HOST_PORT));
+		ClientCommunicator cc = ClientCommunicator.getCom(HOST_IP, HOST_PORT);
+		Screen sc = Screen.createLoginScreen(cc);
 		sc.updateScreen();
 
 	}

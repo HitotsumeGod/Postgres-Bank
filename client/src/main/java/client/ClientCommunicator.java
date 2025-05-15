@@ -38,7 +38,6 @@ class ClientCommunicator {
 		String sform = String.valueOf(accountNum);
 		sockOut.write(sform, 0, sform.length());
 		sockOut.newLine();
-		sockOut.flush();
 		sockOut.write(passwd, 0, passwd.length());
 		sockOut.newLine();
 		sockOut.flush();
@@ -54,7 +53,7 @@ class ClientCommunicator {
 		at.setAccountID(Integer.valueOf(sockIn.readLine()));
 		at.setPassword(sockIn.readLine());
 		at.setBalance(Double.valueOf(sockIn.readLine()));
-		log.write("Client accepted login details from server.");
+		log.write("Client accepted account details from server.");
 		return at;
 		
 		
