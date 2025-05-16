@@ -15,7 +15,7 @@ class ClientCommunicator {
 	private static final String LOGIN_ERROR = "ACCLOG ERR";
 	private static final String LOGFILE_PATH = "src/resources/serv.log";
 	private Logger log;
-	private Socket ssock;
+	public Socket ssock;
 	private BufferedWriter sockOut;
 	private BufferedReader sockIn;
 	
@@ -63,6 +63,7 @@ class ClientCommunicator {
 
 		String s;
 		if ((s = sockIn.readLine()).equals(LOGIN_ERROR)) {
+			System.out.println("checklogin after fails" + ssock.isConnected());
 			log.write("Client login attempt failed.");
 			return false;
 		}

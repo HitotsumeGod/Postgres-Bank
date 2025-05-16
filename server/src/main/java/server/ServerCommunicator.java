@@ -70,8 +70,8 @@ class ServerCommunicator implements Runnable {
 				}
 				sockOut.flush();
 			}
-			sockIn.close();
-			sockOut.close();
+			//sockIn.close();
+			//sockOut.close();
 		} catch (IOException | SQLException io) {
 			io.printStackTrace();
 		}
@@ -121,9 +121,9 @@ class ServerCommunicator implements Runnable {
 			log.write(String.format("Client %d successfully logged in to account.", currentProfile.getAccount().getID()));
 			while (handleClientRequest(currentProfile));
 			log.write(String.format("Client %d has closed the connection.", currentProfile.getAccount().getID()));
-			sockIn.close();
-			sockOut.close();
-			csock.close();
+			//sockIn.close();
+			//sockOut.close();
+			//csock.close();
 		} catch (IOException | SQLException io) {
 			io.printStackTrace();
 		}
